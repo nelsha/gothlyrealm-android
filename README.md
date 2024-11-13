@@ -1,3 +1,33 @@
+## Tugas 8
+1. Apa kegunaan const di Flutter? Jelaskan apa keuntungan ketika menggunakan const pada kode Flutter. Kapan sebaiknya kita menggunakan const, dan kapan sebaiknya tidak digunakan?
+    Const digunakan untuk mendeklarasikan nilai yang bersifat konstan serta diketahui dan diinisialisasi saat compile time. Penggunaan const dapat membuat penggunaan memori lebih berkurang karena program dapat menggunakan objek yang sama tanpa membuat salinan tiap kali objek tersebut dipanggil. Sebaiknya menggunakan const pada widget stateless atau tempat yang nilainya tidak berubah. Sebaliknya, saat menggunakan state widget adalah StatefulWidget sebaiknya const tidak digunakan atau pada saat nilai berubah saat runtime. 
+
+2. Jelaskan dan bandingkan penggunaan Column dan Row pada Flutter. Berikan contoh implementasi dari masing-masing layout widget ini!
+    Column digunakan untuk menyusun widget secara vertikal sedangkan Row digunakan untuk menyusun widget secara horizontal. Column biasanya digunakan saat membuat form atau list sedangkan Row dapat digunakan untuk menampilkan teks. 
+    Contoh implementasi Column:
+    Column(
+        children: [
+        Text('Hello PBP!'),
+        Icon(Icons.star),
+        ],
+    )
+    Contoh implementasi Row:
+    Row(
+        children: [
+        Icon(Icons.home),
+        Text('Home'),
+        ],
+    )
+
+3. Sebutkan apa saja elemen input yang kamu gunakan pada halaman form yang kamu buat pada tugas kali ini. Apakah terdapat elemen input Flutter lain yang tidak kamu gunakan pada tugas ini? Jelaskan!
+    Elemen input yang aku gunakan pada halaman form disini adalah widget TextFormInput. Terdapat elemen input lainnya pada Flutter yang tidak aku gunakan seperti CheckBox, Radio, DatePicker dan lainnya. Penggunaan elemen input tersebut tidak digunakan pada tugas ini karena tidak dibutuhkannya elemen input tersebut untuk form yang dibuat.
+
+4. Bagaimana cara kamu mengatur tema (theme) dalam aplikasi Flutter agar aplikasi yang dibuat konsisten? Apakah kamu mengimplementasikan tema pada aplikasi yang kamu buat?
+    Terdapat tema yang sudah diimplementasi untuk aplikasi agar konsisten pada main.dart. Tema tersebut diatur pada ThemeData yang berisi warna yang digunakan untuk aplikasi.
+
+5. Bagaimana cara kamu menangani navigasi dalam aplikasi dengan banyak halaman pada Flutter?
+    Navigasi pada tugas kali ini menggunakan Navigator untuk berpindah halaman. Penggunaan fungsi Navigator.push digunakan untuk membukan halaman baru diatas halaman yang sedang ditampilkan hingga dapat kembali ke halaman sebelumnya dengan tombol back dengan fungsi Navigator.pop. Penggunaan fungsi Navigator.pushReplacement digunakan untuk membuka halaman baru dan menggantikan halaman saat ini.
+
 ## Tugas 7
 1. Jelaskan apa yang dimaksud dengan stateless widget dan stateful widget, dan jelaskan perbedaan dari keduanya.
     State adalah sesuatu yang mewakili keadaan dari sebuah widget dimana state biasanya digunakan untuk memperbarui tampilan atau data. Hal ini membuat stateful widget sebagai widget yang dapat merespons interaksi pengguna atau perubahan data seperti tombol karena memiliki state yang dapat berubah. Berbeda hal dengan stateless widget yang tidak memiliki state yang bisa berubah hingga widget tidak dapat merespons interaksi pengguna. Stateless Widget dapat meringankan pekerjaan server karena tidak membutuhkan rebuild dibandingkan stateful widget.
