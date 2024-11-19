@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gothly_realm/widgets/left_drawer.dart';
+import 'dart:convert';
+import 'package:gothly_realm/screens/menu.dart';
+import 'package:pbp_django_auth/pbp_django_auth.dart';
+import 'package:provider/provider.dart';
 
 class AddProductFormPage extends StatefulWidget {
   const AddProductFormPage({super.key});
@@ -20,6 +24,7 @@ class _AddProductFormPageState extends State<AddProductFormPage> {
 
   @override
   Widget build(BuildContext context) {
+    final request = context.watch<CookieRequest>();
     return Scaffold(
     appBar: AppBar(
       title: const Center(
@@ -219,41 +224,41 @@ class _AddProductFormPageState extends State<AddProductFormPage> {
                     backgroundColor: MaterialStateProperty.all(
                         Theme.of(context).colorScheme.primary),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Produk berhasil tersimpan'),
-                            content: SingleChildScrollView(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('Name: $_name'),
-                                  Text('Amount: $_amount'),
-                                  Text('Description: $_description'),
-                                  Text('Price: $_price'),
-                                  Text('Category: $_category'),
-                                  Text('Rating: $_rating'),
-                                  Text('Image URL: $_imageUrl'),
-                                ],
-                              ),
-                            ),
-                            actions: [
-                              TextButton(
-                                child: const Text('OK'),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                  _formKey.currentState!.reset();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                        // Kirim ke Django dan tunggu respons
+                        final response = await request.postJson(
+                            "http://127.0.0.1:8000/create-flutter/",
+                            jsonEncode(<String, String>{
+                                'name': _name,
+                                'amount': _amount.toString(),
+                                'description': _description,
+                                'price': _price.toString(),
+                                'category': _category,
+                                'rating': _rating.toString(),
+                                'image_url': _imageUrl
+                            }),
+                        );
+                        if (context.mounted) {
+                            if (response['status'] == 'success') {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                content: Text("Produk baru berhasil disimpan!"),
+                                ));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                                );
+                            } else {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                    content:
+                                        Text("Terdapat kesalahan, silakan coba lagi."),
+                                ));
+                            }
+                        }
                     }
-                  },
+                },
                   child: const Text(
                     "Save",
                     style: TextStyle(color: Colors.white),
